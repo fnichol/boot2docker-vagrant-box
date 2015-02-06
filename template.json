@@ -22,11 +22,16 @@
         "type": "parallels-iso",
         "iso_url": "boot2docker-vagrant.iso",
         "iso_checksum_type": "none",
-        "boot_wait": "5s",
-        "guest_os_distribution": "linux",
+        "boot_wait": "15s",
         "ssh_username": "docker",
         "ssh_password": "tcuser",
-        "shutdown_command": "sudo poweroff"
+        "shutdown_command": "sudo poweroff",
+        "guest_os_type": "linux",
+        "guest_os_distribution": "linux-2.6",
+        "parallels_tools_mode": "disable",
+        "prlctl": [
+            ["set", "{{.Name}}", "--memsize", "512"]
+        ]
     }],
 
     "provisioners": [{

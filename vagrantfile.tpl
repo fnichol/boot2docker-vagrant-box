@@ -7,6 +7,8 @@ Vagrant.configure("2") do |config|
 
   # Expose the Docker port
   config.vm.network "forwarded_port", guest: 2375, host: 2375, host_ip: "127.0.0.1", id: "docker"
+  # For TLS
+  config.vm.network "forwarded_port", guest: 2376, host: 2376, host_ip: "127.0.0.1", id: "docker"
 
   # Attach the ISO
   config.vm.provider "virtualbox" do |v|
@@ -29,16 +31,19 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.provider "parallels" do |v|
+ config.vm.provider :parallels do |v|
+    v.check_guest_tools = false
+    v.functional_psf = false
     v.customize "pre-boot", [
       "set", :id,
-      "--device-add", "cdrom",
-      "--enable", "--connect",
-      "--image", File.expand_path("../boot2docker-vagrant.iso", __FILE__)
+      "--device-set", "cdrom0",
+      "--image", File.expand_path("../boot2docker-vagrant.iso", __FILE__),
+      "--enable", "--connect"
     ]
     v.customize "pre-boot", [
       "set", :id,
       "--device-bootorder", "cdrom0 hdd0"
     ]
   end
+
 end
